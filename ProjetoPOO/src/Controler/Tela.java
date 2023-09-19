@@ -183,20 +183,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 if (index == 0 && msg == 0){
                     
                     isPaused = !isPaused;
-                    hero.nome = JOptionPane.showInputDialog(null, "Por favor, insira o nome do seu personagem:", "Nome do Personagem", JOptionPane.INFORMATION_MESSAGE);
-        
-                    JOptionPane.showMessageDialog(
-                    null,
-                    "Bem-vindo, " + hero.nome + "! Prepare-se para uma jornada emocionante e desafiadora como um destemido Herói. Enfrente inimigos ferozes, desvende mistérios e conquiste o mundo com sua coragem e força.\n" +
-                    "\n" +
-                    "Lembre-se, o caminho dos Berserkers é árduo, e somente os mais corajosos e habilidosos terão sucesso. Esteja pronto para lutar até o fim e se tornar uma lenda!\n" +
-                    "\nConquiste todos os Baldes de Hidromel para prosseguir para a próxima fase!",
-                    "Dark Sonia",
-                    JOptionPane.INFORMATION_MESSAGE
-                    );
+                    hero.nome = "Herói";
                     msg++;
                     System.out.println(hero.nome + ". Quantidade de Vidas: " + hero.vidas + ". \nPegue os baldes de Hidromel para prosseguir e as chaves para superar os obstáculos da masmorra. \nDesvie dos Inimigos e Conquiste a glória!");
-                    System.out.println("Use as setas do teclado para se movimentar!\nR - Reinicia Fase\nS - Salva o jogo\nL - Carrega o último Save\nBotão Esquedo do Mouse - Passa de Fase Automaticamente (Solução de covardes!)");
+                    System.out.println("Use as setas do teclado para se movimentar!\nR - Reinicia Fase\nS - Salva o jogo\nL - Carrega o último Save\nLetra P - Passa de Fase Automaticamente (Solução de covardes!)");
                     isPaused = !isPaused;
                 }
                 if (this.cj.processaTudo(faseAtual) == 0){
@@ -341,19 +331,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     this.carregarJogo();
                 } else {
                     isPaused = !isPaused;
-                }
-            
-        }
-
-        this.setTitle("-> Cell: " + (hero.getPosicao().getColuna()) + ", "
-                + (hero.getPosicao().getLinha()));
-
-        //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
-    }
-
-    public void mousePressed(MouseEvent e) {
-        /* Clique do mouse desligado*/
-        index++;
+                }   
+        } else if (e.getKeyCode() == KeyEvent.VK_P){
+            index++;
         this.faseAtual.clear();
         if (index == 5){
                         JOptionPane.showMessageDialog(
@@ -368,10 +348,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         }
         this.setFase(index);
         repaint();
-        
+        }
+
+        this.setTitle("-> Cell: " + (hero.getPosicao().getColuna()) + ", "
+                + (hero.getPosicao().getLinha()));
+
+        //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
+    }
+
+    public void mousePressed(MouseEvent e) {
+        /* Clique do mouse desligado*/
+         
          //this.hero.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
          
-        repaint();
     }
     
     
