@@ -13,8 +13,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Hero extends Personagem implements Serializable{
+    public int vidas;
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
+        vidas = 3;
     }
 
     public void voltaAUltimaPosicao(){
