@@ -49,15 +49,32 @@ public class Posicao  implements Serializable{
     
     
     public boolean moveUp(){
-        return this.setPosicao(this.getLinha()-1, this.getColuna());
+        if (this.getLinha() - 1 > 0){
+            return this.setPosicao(this.getLinha()-1, this.getColuna());
+        } else {
+            return false;
+        }
+        
     }
     public boolean moveDown(){
-        return this.setPosicao(this.getLinha()+1, this.getColuna());
+        if (this.getLinha() + 1 < Auxiliar.Consts.RES - 1){
+            return this.setPosicao(this.getLinha()+1, this.getColuna());
+        } else {
+            return false;
+        }
     }
     public boolean moveRight(){
-        return this.setPosicao(this.getLinha(), this.getColuna()+1);
+        if (this.getColuna() + 1 < Auxiliar.Consts.RES - 1){
+            return this.setPosicao(this.getLinha(), this.getColuna()+1);
+        } else {
+            return false;
+        }
     }
     public boolean moveLeft(){
-        return this.setPosicao(this.getLinha(), this.getColuna()-1);        
+        if (this.getColuna() - 1 > 0){
+            return this.setPosicao(this.getLinha(), this.getColuna()-1);  
+        } else {
+            return false;
+        }
     }
 }

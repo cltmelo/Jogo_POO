@@ -11,16 +11,16 @@ public class ZigueZague extends Personagem{
 
     public void autoDesenho(){
         Random rand = new Random();
-        int iDirecao = rand.nextInt(4);
+        int iDirecao = rand.nextInt(5);
         
         if(iDirecao == 1)
-            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);
+            this.moveRight();
         else if(iDirecao == 2)
-            this.setPosicao(pPosicao.getLinha()+1, pPosicao.getColuna());
+            this.moveDown();
         else if(iDirecao == 3)
-            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()-1);
+            this.moveLeft();
         else if(iDirecao == 4)
-            this.setPosicao(pPosicao.getLinha()-1, pPosicao.getColuna());
+            this.moveUp();
         
         super.autoDesenho();
     }    

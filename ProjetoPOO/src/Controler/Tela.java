@@ -212,7 +212,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
          this.setTitle("X: "+ x + ", Y: " + y +
          " -> Cell: " + (y/Consts.CELL_SIDE) + ", " + (x/Consts.CELL_SIDE));
         
-         this.hero.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
+         //this.hero.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
          
         repaint();
     }
