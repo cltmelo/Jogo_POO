@@ -13,12 +13,14 @@ import javax.swing.JPanel;
 
 public class BichinhoVaiVemHorizontal extends Personagem  implements Serializable{
     private boolean bRight;
-
+    private boolean bMortal;
     public BichinhoVaiVemHorizontal(String sNomeImagePNG) {
         super(sNomeImagePNG);
         bRight = true;
+        this.bMortal = true;
         //this.bTransponivel = false;
     }
+    @Override
     public void autoDesenho(){
         if(bRight)
             this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);

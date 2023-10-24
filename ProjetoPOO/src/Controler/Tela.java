@@ -6,6 +6,7 @@ import Modelo.Hero;
 import Modelo.BichinhoVaiVemHorizontal;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Modelo.PersegueJogador;
 import Modelo.ZigueZague;
 import auxiliar.Posicao;
 import java.awt.FlowLayout;
@@ -71,6 +72,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Caveira bV = new Caveira("caveira.png");
         bV.setPosicao(9, 1);
         this.addPersonagem(bV);
+        
+        
+        Caveira bV2 = new Caveira("caveira.png");
+        bV2.setPosicao(12, 1);
+        this.addPersonagem(bV2);
+        
+        PersegueJogador pj = new PersegueJogador("roboPink.png", hero);
+        pj.setPosicao(15, 15);
+        this.addPersonagem(pj);
+        
     }
 
     public boolean ehPosicaoValida(Posicao p){
@@ -87,6 +98,33 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public Graphics getGraphicsBuffer(){
         return g2;
     }
+    
+    public void restart(int vidas) {
+        faseAtual.clear();  // Limpa a lista de personagens da fase
+
+        // Adicione os personagens iniciais novamente, como você fez no construtor
+        hero = new Hero("skoot.png");
+        hero.vidas = vidas;
+        hero.setPosicao(1, 7);
+        this.addPersonagem(hero);
+
+        ZigueZague zz = new ZigueZague("robo.png");
+        zz.setPosicao(5, 5);
+        this.addPersonagem(zz);
+
+        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
+        bBichinhoH.setPosicao(3, 3);
+        this.addPersonagem(bBichinhoH);
+
+        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
+        bBichinhoH2.setPosicao(6, 6);
+        this.addPersonagem(bBichinhoH2);
+
+        Caveira bV = new Caveira("caveira.png");
+        bV.setPosicao(9, 1);
+        this.addPersonagem(bV);
+    }
+
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /*Criamos um contexto gráfico*/
@@ -165,7 +203,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         if (!this.faseAtual.isEmpty()) {
             this.cj.desenhaTudo(faseAtual);
-            this.cj.processaTudo(faseAtual);
+            
+            if (this.cj.processaTudo(faseAtual)){
+                restart(hero.vidas);
+            }
         }
 
         g.dispose();
@@ -187,7 +228,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_C) { //Como mudar isso para que de restart na fase atual?
-            this.faseAtual.clear();
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
