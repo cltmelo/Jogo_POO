@@ -22,15 +22,26 @@ import javax.swing.JPanel;
 public class PersegueJogador extends Personagem implements Serializable{
     private Hero jogador;
     private boolean bMortal;
+<<<<<<< HEAD
+=======
+    private boolean bRight;
+>>>>>>> 44569a2a87eb206d48ea0156b2e667733d2bb614
 
     public PersegueJogador(String sNomeImagePNG, Hero jogador) {
         super(sNomeImagePNG);
         this.bMortal = true;
         this.jogador = jogador;
+<<<<<<< HEAD
         this.bTransponivel = false;
     }
 
     @Override
+=======
+        this.bTransponivel = true;
+        bRight = true;
+    }
+
+>>>>>>> 44569a2a87eb206d48ea0156b2e667733d2bb614
     public void autoDesenho() {
         if (jogador.getPosicao().getLinha() == this.getPosicao().getLinha()) {
             // O jogador está na mesma linha vertical
@@ -42,6 +53,18 @@ public class PersegueJogador extends Personagem implements Serializable{
                 this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);
             }
         }
+<<<<<<< HEAD
+=======
+                
+
+        if(bRight)
+            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);
+        else
+            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()-1);           
+
+        super.autoDesenho();
+        bRight = !bRight;
+>>>>>>> 44569a2a87eb206d48ea0156b2e667733d2bb614
         // Se o jogador não estiver na mesma linha, o inimigo pode se mover de outra forma.
         // Implemente o comportamento desejado nesse caso.
     }
