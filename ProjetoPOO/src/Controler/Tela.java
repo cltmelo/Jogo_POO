@@ -8,7 +8,8 @@ import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Modelo.PersegueJogador;
 import Modelo.ZigueZague;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
+import Modelo.Estrutura;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -31,6 +32,7 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
+import Modelo.PersegueVertical;
 
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
@@ -81,6 +83,15 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         PersegueJogador pj = new PersegueJogador("roboPink.png", hero);
         pj.setPosicao(15, 15);
         this.addPersonagem(pj);
+        
+        
+        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
+        pv.setPosicao(17, 15);
+        this.addPersonagem(pv);
+        
+        Estrutura tijolos = new Estrutura("bricks.png");
+        tijolos.setPosicao(15, 10);
+        this.addPersonagem(tijolos);
         
     }
 
