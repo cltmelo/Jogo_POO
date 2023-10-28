@@ -4,26 +4,18 @@
  */
 package Modelo;
 
-import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
-import java.io.IOException;
 import java.io.Serializable;
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 
 /**
  *
  * @author jean
  */
-public class PersegueJogador extends Personagem implements Serializable{
+public class PersegueVertical extends Personagem implements Serializable {
     private Hero jogador;
     private boolean bRight;
-
-    public PersegueJogador(String sNomeImagePNG, Hero jogador) {
+    
+    public PersegueVertical(String sNomeImagePNG, Hero jogador) {
         super(sNomeImagePNG);
         this.bMortal = true;
         this.jogador = jogador;
@@ -79,14 +71,14 @@ public class PersegueJogador extends Personagem implements Serializable{
     }
     
     public void autoDesenho() {
-        if (jogador.getPosicao().getLinha() == this.getPosicao().getLinha()) {
+        if (jogador.getPosicao().getColuna() == this.getPosicao().getColuna()) {
             // O jogador está na mesma linha vertical
-            if (jogador.getPosicao().getColuna() < this.getPosicao().getColuna()) {
+            if (jogador.getPosicao().getLinha() < this.getPosicao().getLinha()) {
                 // Mova o inimigo para a esquerda (em direção ao jogador)
-                this.moveLeft();
-            } else if (jogador.getPosicao().getColuna() > this.getPosicao().getColuna()) {
+                this.moveUp();
+            } else if (jogador.getPosicao().getLinha() > this.getPosicao().getLinha()) {
                 // Mova o inimigo para a direita (em direção ao jogador)
-                this.moveRight();
+                this.moveDown();
             }
         } else {
                 
@@ -110,7 +102,4 @@ public class PersegueJogador extends Personagem implements Serializable{
         // Se o jogador não estiver na mesma linha, o inimigo pode se mover de outra forma.
         // Implemente o comportamento desejado nesse caso.
     }
-    
-
 }
-

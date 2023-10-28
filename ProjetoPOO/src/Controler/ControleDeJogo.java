@@ -2,7 +2,7 @@ package Controler;
 
 import Modelo.Personagem;
 import Modelo.Hero;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
