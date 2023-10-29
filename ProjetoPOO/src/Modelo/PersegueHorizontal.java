@@ -19,11 +19,11 @@ import javax.swing.JPanel;
  *
  * @author jean
  */
-public class PersegueJogador extends Personagem implements Serializable{
+public class PersegueHorizontal extends Personagem implements Serializable{
     private Hero jogador;
     private boolean bRight;
 
-    public PersegueJogador(String sNomeImagePNG, Hero jogador) {
+    public PersegueHorizontal(String sNomeImagePNG, Hero jogador) {
         super(sNomeImagePNG);
         this.bMortal = true;
         this.jogador = jogador;

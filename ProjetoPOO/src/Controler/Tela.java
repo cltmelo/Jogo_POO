@@ -6,10 +6,10 @@ import Modelo.Hero;
 import Modelo.BichinhoVaiVemHorizontal;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Modelo.PersegueJogador;
+import Modelo.PersegueHorizontal;
 import Modelo.ZigueZague;
 import Auxiliar.Posicao;
-import Modelo.Estrutura;
+import Modelo.Cenario;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -33,6 +33,8 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
 import Modelo.PersegueVertical;
+import Modelo.Fase;
+import javax.swing.JOptionPane;
 
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
@@ -41,23 +43,44 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private ArrayList<Personagem> faseAtual;
     private ControleDeJogo cj = new ControleDeJogo();
     private Graphics g2;
-
+    private Fase map = new Fase();
+    
     public Tela() {
         Desenho.setCenario(this);
         initComponents();
         this.addMouseListener(this); /*mouse*/
 
         this.addKeyListener(this);   /*teclado*/
+        
         /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
 
+        
         faseAtual = new ArrayList<Personagem>();
-
+        
         /*Cria faseAtual adiciona personagens*/
         hero = new Hero("skoot.png");
         hero.setPosicao(1, 7);
-        this.addPersonagem(hero);
+        this.addPersonagem(hero);             //SEMPRE ADD O HEOI PRIMEIRO SE NAO O CODIGO QUEBRA!!!!!!!!!!!!!!
+        
+        
+        int index = 1; //Começa como zero para a primeira fase, depois vamos incrmentando para mudar para fase seguinte
+    
+        int[][] fase = map.getFase(index);
+        
+        for(int i=0; i< Consts.RES; i++){
+            for(int j=0; j<Consts.RES; j++){
+                int elem = fase[i][j];
+                
+                switch(elem){
+                    case 5:
+                        Cenario tijoloteste = new Cenario("bricks.png");
+                        tijoloteste.setPosicao(i, j);
+                        this.addPersonagem(tijoloteste);
+                }
+            }
+        }
         
         ZigueZague zz = new ZigueZague("robo.png");
         zz.setPosicao(5, 5);
@@ -80,21 +103,27 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         bV2.setPosicao(12, 1);
         this.addPersonagem(bV2);
         
-        PersegueJogador pj = new PersegueJogador("roboPink.png", hero);
+        PersegueHorizontal pj = new PersegueHorizontal("roboPink.png", hero);
         pj.setPosicao(15, 15);
         this.addPersonagem(pj);
         
         
-        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
-        pv.setPosicao(17, 15);
-        this.addPersonagem(pv);
+//        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
+//        pv.setPosicao(17, 15);
+//        this.addPersonagem(pv);
         
-        Estrutura tijolos = new Estrutura("bricks.png");
-        tijolos.setPosicao(15, 10);
-        this.addPersonagem(tijolos);
+        Cenario tijolo1 = new Cenario("bricks.png");
+        tijolo1.setPosicao(3, 10);
+        this.addPersonagem(tijolo1); //Isso aqui ta cagando o vaievemhorizontal, pois ele bate no cenário e não volta
+
+        for(int i=10; i<16; i++){
+            Cenario tijolos = new Cenario("bricks.png");
+            tijolos.setPosicao(i, 10);
+            this.addPersonagem(tijolos);
+        }
         
     }
-
+    
     public boolean ehPosicaoValida(Posicao p){
         return cj.ehPosicaoValida(this.faseAtual, p);
     }
@@ -110,7 +139,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         return g2;
     }
     
-    public void restart(int vidas) {
+    public void restart(int vidas) { //ALTERAR PARA DESENHAR TODA FASEATUAL
         faseAtual.clear();  // Limpa a lista de personagens da fase
 
         // Adicione os personagens iniciais novamente, como você fez no construtor
@@ -136,6 +165,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.addPersonagem(bV);
     }
 
+    // Vai sempre desenhar nosso sprite que tem o fundo e a borda
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /*Criamos um contexto gráfico*/
@@ -238,7 +268,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_C) { //Como mudar isso para que de restart na fase atual?
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            int aux = 3; //ALTERAR E FAZER CERTINHO. ADD TAMBEM UM POPUP PERGUNTANTO 'TEM CTZ?'
+            restart(aux);
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -317,4 +349,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyReleased(KeyEvent e) {
     }
+    
+
 }

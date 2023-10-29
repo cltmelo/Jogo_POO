@@ -12,10 +12,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class BichinhoVaiVemHorizontal extends Personagem  implements Serializable{
-    private boolean bRight;
+    private boolean bRight = true;
     public BichinhoVaiVemHorizontal(String sNomeImagePNG) {
         super(sNomeImagePNG);
-        bRight = true;
+//        bRight = true;
         this.bMortal = true;
         //this.bTransponivel = false;
     }
@@ -69,13 +69,39 @@ public class BichinhoVaiVemHorizontal extends Personagem  implements Serializabl
     }
     
     @Override
-    public void autoDesenho(){
-        if(bRight)
-            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);
-        else
-            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()-1);           
+//    public void autoDesenho(){
+//        if(bRight)
+//            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);
+//        else
+//            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()-1);           
+//
+//        super.autoDesenho();
+//        
+//        if(!validaPosicao())
+//            bRight = !bRight;
+//    }
+    
+    /*Com essa aqui, o ziguezague percorre toda a linha*/
+    public void autoDesenho() {
+        if (bRight) {
+            if (this.getPosicao().getColuna() < (Consts.RES - 2) ) {
+                // Move para a direita
+                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
+            } else {
+                // Chegou à borda direita, muda de direção
+                bRight = false;
+            }
+        } else {
+            if (this.getPosicao().getColuna() > 1) {
+                // Move para a esquerda
+                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
+            } else {
+                // Chegou à borda esquerda, muda de direção
+                bRight = true;
+            }
+        }
 
         super.autoDesenho();
-        bRight = !bRight;
     }
+    
 }

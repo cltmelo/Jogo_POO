@@ -18,9 +18,9 @@ import javax.swing.ImageIcon;
  *
  * @author jean
  */
-public class Estrutura extends Personagem implements Serializable{
+public class Cenario extends Personagem implements Serializable{
 
-    public Estrutura(String sNomeImagePNG) {
+    public Cenario(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bTransponivel = false;
     }

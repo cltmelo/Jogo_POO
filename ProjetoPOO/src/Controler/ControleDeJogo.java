@@ -16,6 +16,7 @@ public class ControleDeJogo {
     }
     public boolean processaTudo(ArrayList<Personagem> umaFase){
         Hero hero = (Hero)umaFase.get(0);
+        
         Personagem pIesimoPersonagem;
         for(int i = 1; i < umaFase.size(); i++){
             pIesimoPersonagem = umaFase.get(i);
@@ -60,6 +61,7 @@ public class ControleDeJogo {
     }
         return false;
 }
+
     /*Retorna true se a posicao p é válida para Hero com relacao a todos os personagens no array*/
     public boolean ehPosicaoValida(ArrayList<Personagem> umaFase, Posicao p){
         Personagem pIesimoPersonagem;
