@@ -247,22 +247,22 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         
         for(int i=0; i<Consts.RES; i++){
             for (int j=0; j<Consts.RES; j++){
-                if(i != linhaHero && j != colunaHero){
-                    int elem = fase[i][j];
-                    
-                    switch(elem){
-                        case 5:
-                            Cenario tijoloteste = new Cenario("bricks.png");
-                            tijoloteste.setPosicao(i, j);
-                            this.addPersonagem(tijoloteste);
-                        case 40:
-                            break;
+                int elem = fase[i][j];
+                
+                switch(elem){
+                    case 5:
+                        Cenario tijoloteste = new Cenario("bricks.png");
+                        tijoloteste.setPosicao(i, j);
+                        this.addPersonagem(tijoloteste);
+                    case 40:
+                        break;
 //                        default:
 //                            break;
                     }
-                }
             }
         }
+        
+        
         
         Randomico zz = new Randomico("robo.png");
         zz.setPosicao(5, 5);

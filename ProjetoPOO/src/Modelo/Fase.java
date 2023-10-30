@@ -17,8 +17,8 @@ import Auxiliar.Consts;
 /*SCRIPT DOS MAPAS
 
     -1: borda
-    0: background
-    
+    0: back1ground
+    1: brick
 
 */
 public class Fase {
