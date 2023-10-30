@@ -7,6 +7,7 @@ import Modelo.CaveiraUp;
 import Modelo.CaveiraDown;
 import Modelo.Hero;
 import Modelo.BichinhoVaiVemHorizontal;
+import Modelo.BichinhoVaiVemVertical;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Modelo.PersegueHorizontal;
@@ -267,7 +268,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         zz.setPosicao(5, 5);
         this.addPersonagem(zz);
 
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
+        BichinhoVaiVemVertical bBichinhoH = new BichinhoVaiVemVertical("roboPink.png");
         bBichinhoH.setPosicao(3, 3);
         this.addPersonagem(bBichinhoH);
 
