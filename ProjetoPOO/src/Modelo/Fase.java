@@ -13,6 +13,14 @@ import Auxiliar.Consts;
  *
  * @author lucas
  */
+
+/*SCRIPT DOS MAPAS
+
+    -1: borda
+    0: background
+    
+
+*/
 public class Fase {
     public int[][][] fases = new int[Consts.FASE_NUMBER][][];
 
