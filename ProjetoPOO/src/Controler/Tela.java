@@ -1,13 +1,16 @@
 package Controler;
 
 import Modelo.Personagem;
-import Modelo.Caveira;
+import Modelo.CaveiraRight;
+import Modelo.CaveiraLeft;
+import Modelo.CaveiraUp;
+import Modelo.CaveiraDown;
 import Modelo.Hero;
 import Modelo.BichinhoVaiVemHorizontal;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
 import Modelo.PersegueHorizontal;
-import Modelo.ZigueZague;
+import Modelo.Randomico;
 import Auxiliar.Posicao;
 import Modelo.Cenario;
 import java.awt.FlowLayout;
@@ -44,6 +47,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     private ControleDeJogo cj = new ControleDeJogo();
     private Graphics g2;
     private Fase map = new Fase();
+    int linhaHero = 1;
+    int colunaHero = 12;
     
     public Tela() {
         Desenho.setCenario(this);
@@ -58,69 +63,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         
         faseAtual = new ArrayList<Personagem>();
-        
-        /*Cria faseAtual adiciona personagens*/
-        hero = new Hero("skoot.png");
-        hero.setPosicao(1, 7);
-        this.addPersonagem(hero);             //SEMPRE ADD O HEOI PRIMEIRO SE NAO O CODIGO QUEBRA!!!!!!!!!!!!!!
-        
-        
-        int index = 1; //Começa como zero para a primeira fase, depois vamos incrmentando para mudar para fase seguinte
-    
-        int[][] fase = map.getFase(index);
-        
-        for(int i=0; i< Consts.RES; i++){
-            for(int j=0; j<Consts.RES; j++){
-                int elem = fase[i][j];
-                
-                switch(elem){
-                    case 5:
-                        Cenario tijoloteste = new Cenario("bricks.png");
-                        tijoloteste.setPosicao(i, j);
-                        this.addPersonagem(tijoloteste);
-                }
-            }
-        }
-        
-        ZigueZague zz = new ZigueZague("robo.png");
-        zz.setPosicao(5, 5);
-        this.addPersonagem(zz);
-
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH.setPosicao(3, 3);
-        this.addPersonagem(bBichinhoH);
-
-        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH2.setPosicao(6, 6);
-        this.addPersonagem(bBichinhoH2);
-
-        Caveira bV = new Caveira("caveira.png");
-        bV.setPosicao(9, 1);
-        this.addPersonagem(bV);
-        
-        
-        Caveira bV2 = new Caveira("caveira.png");
-        bV2.setPosicao(12, 1);
-        this.addPersonagem(bV2);
-        
-        PersegueHorizontal pj = new PersegueHorizontal("roboPink.png", hero);
-        pj.setPosicao(15, 15);
-        this.addPersonagem(pj);
-        
-        
-//        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
-//        pv.setPosicao(17, 15);
-//        this.addPersonagem(pv);
-        
-        Cenario tijolo1 = new Cenario("bricks.png");
-        tijolo1.setPosicao(3, 10);
-        this.addPersonagem(tijolo1); //Isso aqui ta cagando o vaievemhorizontal, pois ele bate no cenário e não volta
-
-        for(int i=10; i<16; i++){
-            Cenario tijolos = new Cenario("bricks.png");
-            tijolos.setPosicao(i, 10);
-            this.addPersonagem(tijolos);
-        }
+        int index = 1;
+        setFase(index);     
         
     }
     
@@ -139,30 +83,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         return g2;
     }
     
-    public void restart(int vidas) { //ALTERAR PARA DESENHAR TODA FASEATUAL
+    public void restart(int vidas, int index) { //ALTERAR PARA DESENHAR TODA FASEATUAL
         faseAtual.clear();  // Limpa a lista de personagens da fase
-
-        // Adicione os personagens iniciais novamente, como você fez no construtor
-        hero = new Hero("skoot.png");
-        hero.vidas = vidas;
-        hero.setPosicao(1, 7);
-        this.addPersonagem(hero);
-
-        ZigueZague zz = new ZigueZague("robo.png");
-        zz.setPosicao(5, 5);
-        this.addPersonagem(zz);
-
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH.setPosicao(3, 3);
-        this.addPersonagem(bBichinhoH);
-
-        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH2.setPosicao(6, 6);
-        this.addPersonagem(bBichinhoH2);
-
-        Caveira bV = new Caveira("caveira.png");
-        bV.setPosicao(9, 1);
-        this.addPersonagem(bV);
+        setFase(index);
     }
 
     // Vai sempre desenhar nosso sprite que tem o fundo e a borda
@@ -246,8 +169,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             this.cj.desenhaTudo(faseAtual);
             
             if (this.cj.processaTudo(faseAtual)){
-                restart(hero.vidas);
+                restart(hero.vidas, 1); //AJEITAR PARA PASSAR O INDEX COMO PARAMETRO AO INVES DE '1'
             }
+            
+            /*
+            if(this.cj.processaTudo(faseAtual) == 1){ //HOMER
+                this.index++;
+                this.faseAtual.clear();
+                setFase(index);
+            }
+            */
         }
 
         g.dispose();
@@ -269,8 +200,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_R) {
-            int aux = 3; //ALTERAR E FAZER CERTINHO. ADD TAMBEM UM POPUP PERGUNTANTO 'TEM CTZ?'
-            restart(aux);
+            int aux = 1; //ALTERAR E FAZER CERTINHO. ADD TAMBEM UM POPUP PERGUNTANTO 'TEM CTZ?'
+            restart(aux, aux); //TEM QUE AJEITAR ISSO AQUI!
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -298,6 +229,80 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
          //this.hero.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
          
         repaint();
+    }
+    
+    
+    public void setFase(int index){
+        /*Cria faseAtual adiciona personagens*/
+        hero = new Hero("skoot.png");
+        hero.setPosicao(linhaHero, colunaHero);
+        this.addPersonagem(hero);             //SEMPRE ADD O HEOI PRIMEIRO SE NAO O CODIGO QUEBRA!!!!!!!!!!!!!!
+        
+        
+        //index começa como zero para a primeira fase, depois vamos incrmentando para mudar para fase seguinte
+    
+        int[][] fase = map.getFase(index);
+        
+        
+        for(int i=0; i<Consts.RES; i++){
+            for (int j=0; j<Consts.RES; j++){
+                if(i != linhaHero && j != colunaHero){
+                    int elem = fase[i][j];
+                    
+                    switch(elem){
+                        case 5:
+                            Cenario tijoloteste = new Cenario("bricks.png");
+                            tijoloteste.setPosicao(i, j);
+                            this.addPersonagem(tijoloteste);
+                        case 40:
+                            break;
+//                        default:
+//                            break;
+                    }
+                }
+            }
+        }
+        
+        Randomico zz = new Randomico("robo.png");
+        zz.setPosicao(5, 5);
+        this.addPersonagem(zz);
+
+        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
+        bBichinhoH.setPosicao(3, 3);
+        this.addPersonagem(bBichinhoH);
+
+        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
+        bBichinhoH2.setPosicao(6, 6);
+        this.addPersonagem(bBichinhoH2);
+
+        CaveiraUp bV = new CaveiraUp("caveira.png");
+        bV.setPosicao(9, 1);
+        this.addPersonagem(bV);
+        
+        
+        CaveiraRight bV2 = new CaveiraRight("caveira.png");
+        bV2.setPosicao(12, 1);
+        this.addPersonagem(bV2);
+        
+        PersegueHorizontal pj = new PersegueHorizontal("roboPink.png", hero);
+        pj.setPosicao(15, 15);
+        this.addPersonagem(pj);
+        
+        
+//        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
+//        pv.setPosicao(17, 15);
+//        this.addPersonagem(pv);
+        
+        Cenario tijolo1 = new Cenario("bricks.png");
+        tijolo1.setPosicao(3, 10);
+        this.addPersonagem(tijolo1); //Isso aqui ta cagando o vaievemhorizontal, pois ele bate no cenário e não volta
+
+        for(int i=10; i<16; i++){
+            Cenario tijolos = new Cenario("bricks.png");
+            tijolos.setPosicao(i, 10);
+            this.addPersonagem(tijolos);
+        }
+        
     }
 
 

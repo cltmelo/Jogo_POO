@@ -6,10 +6,10 @@ import Controler.Tela;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-public class Caveira extends Personagem implements Serializable{
+public class CaveiraUp extends Personagem implements Serializable{
     private int iContaIntervalos;
     
-    public Caveira(String sNomeImagePNG) {
+    public CaveiraUp(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bTransponivel = false;
         this.iContaIntervalos = 0;
@@ -21,8 +21,8 @@ public class Caveira extends Personagem implements Serializable{
         this.iContaIntervalos++;
         if(this.iContaIntervalos == Consts.TIMER_DISPARO){
             this.iContaIntervalos = 0;
-            Fogo f = new Fogo("fire.png");
-            f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna()+1);
+            FogoUp f = new FogoUp("fire_up.png");
+            f.setPosicao(pPosicao.getLinha()-1,pPosicao.getColuna());
             Desenho.acessoATelaDoJogo().addPersonagem(f);
         }
     }    

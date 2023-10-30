@@ -100,6 +100,16 @@ public class BichinhoVaiVemHorizontal extends Personagem  implements Serializabl
                 bRight = true;
             }
         }
+        
+        if (bRight) {
+                if(!this.moveRight()){
+                    bRight = false;
+                }
+            } else {
+                if(!this.moveLeft()){
+                    bRight = true;
+                }
+            }
 
         super.autoDesenho();
     }

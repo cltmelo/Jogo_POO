@@ -5,9 +5,9 @@ import Controler.Tela;
 import java.awt.Graphics;
 import java.io.Serializable;
 
-public class Fogo extends Personagem implements Serializable{
+public class FogoRight extends Personagem implements Serializable{
             
-    public Fogo(String sNomeImagePNG) {
+    public FogoRight(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bMortal = true;
     }

@@ -3,9 +3,9 @@ package Modelo;
 import Auxiliar.Desenho;
 import java.util.Random;
 
-public class ZigueZague extends Personagem{
+public class Randomico extends Personagem{
     
-    public ZigueZague(String sNomeImagePNG) {
+    public Randomico(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bMortal = true;
     }
