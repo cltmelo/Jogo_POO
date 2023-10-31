@@ -2,7 +2,8 @@ package Controler;
 
 import Modelo.Personagem;
 import Modelo.Hero;
-import auxiliar.Posicao;
+import Auxiliar.Posicao;
+import Modelo.PassaFase;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -14,11 +15,19 @@ public class ControleDeJogo {
             e.get(i).autoDesenho();
         }
     }
-    public boolean processaTudo(ArrayList<Personagem> umaFase){
+    public int processaTudo(ArrayList<Personagem> umaFase){
         Hero hero = (Hero)umaFase.get(0);
+        int aux = 0;
         Personagem pIesimoPersonagem;
         for(int i = 1; i < umaFase.size(); i++){
             pIesimoPersonagem = umaFase.get(i);
+            
+            if (pIesimoPersonagem instanceof PassaFase){
+                aux++;
+            }
+            
+            
+                 
             if(hero.getPosicao().igual(pIesimoPersonagem.getPosicao()))
                 if(pIesimoPersonagem.isbTransponivel())
                     /*TO-DO: verificar se o personagem eh mortal antes de retirar*/  
@@ -40,10 +49,9 @@ public class ControleDeJogo {
                             if (escolha == 0){
                                 hero.vidas--;
                                 /*Reiniciar Fase*/
-                                return true;
+                                return 0;
                             } else {
                                 System.exit(0);
-                                return false;
                             }
                         } else {
                             JOptionPane.showMessageDialog(
@@ -52,14 +60,22 @@ public class ControleDeJogo {
                                 "GAME OVER", 
                                 JOptionPane.INFORMATION_MESSAGE);
                             System.exit(0);
-                            return false;
                         }
+          
+                
                         
                     
         }
+        
     }
-        return false;
+        
+    if (aux == 0){
+        return 1;
+    }
+    
+    return 2;
 }
+
     /*Retorna true se a posicao p é válida para Hero com relacao a todos os personagens no array*/
     public boolean ehPosicaoValida(ArrayList<Personagem> umaFase, Posicao p){
         Personagem pIesimoPersonagem;

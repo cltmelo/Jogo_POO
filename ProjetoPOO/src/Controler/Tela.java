@@ -1,14 +1,20 @@
 package Controler;
 
+import Modelo.PassaFase;
 import Modelo.Personagem;
-import Modelo.Caveira;
+import Modelo.CaveiraRight;
+import Modelo.CaveiraLeft;
+import Modelo.CaveiraUp;
+import Modelo.CaveiraDown;
 import Modelo.Hero;
 import Modelo.BichinhoVaiVemHorizontal;
+import Modelo.BichinhoVaiVemVertical;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-import Modelo.PersegueJogador;
-import Modelo.ZigueZague;
-import auxiliar.Posicao;
+import Modelo.PersegueHorizontal;
+import Modelo.Randomico;
+import Auxiliar.Posicao;
+import Modelo.Cenario;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -31,59 +37,42 @@ import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
+import Modelo.PersegueVertical;
+import Modelo.Fase;
+import javax.swing.JOptionPane;
+import Modelo.PassaFase;
 
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
-
+    private boolean isPaused;
     private Hero hero;
     private ArrayList<Personagem> faseAtual;
     private ControleDeJogo cj = new ControleDeJogo();
     private Graphics g2;
-
+    private Fase map = new Fase();
+    int linhaHero = 1;
+    int colunaHero = 12;
+    int index;
+    
     public Tela() {
         Desenho.setCenario(this);
         initComponents();
         this.addMouseListener(this); /*mouse*/
-
+        isPaused = false;
         this.addKeyListener(this);   /*teclado*/
+        hero = new Hero("skoot.png");
+        
         /*Cria a janela do tamanho do tabuleiro + insets (bordas) da janela*/
         this.setSize(Consts.RES * Consts.CELL_SIDE + getInsets().left + getInsets().right,
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
 
+        
         faseAtual = new ArrayList<Personagem>();
-
-        /*Cria faseAtual adiciona personagens*/
-        hero = new Hero("skoot.png");
-        hero.setPosicao(1, 7);
-        this.addPersonagem(hero);
-        
-        ZigueZague zz = new ZigueZague("robo.png");
-        zz.setPosicao(5, 5);
-        this.addPersonagem(zz);
-
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH.setPosicao(3, 3);
-        this.addPersonagem(bBichinhoH);
-
-        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH2.setPosicao(6, 6);
-        this.addPersonagem(bBichinhoH2);
-
-        Caveira bV = new Caveira("caveira.png");
-        bV.setPosicao(9, 1);
-        this.addPersonagem(bV);
-        
-        
-        Caveira bV2 = new Caveira("caveira.png");
-        bV2.setPosicao(12, 1);
-        this.addPersonagem(bV2);
-        
-        PersegueJogador pj = new PersegueJogador("roboPink.png", hero);
-        pj.setPosicao(15, 15);
-        this.addPersonagem(pj);
+        index = 1;
+        setFase(index);     
         
     }
-
+    
     public boolean ehPosicaoValida(Posicao p){
         return cj.ehPosicaoValida(this.faseAtual, p);
     }
@@ -99,32 +88,12 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         return g2;
     }
     
-    public void restart(int vidas) {
+    public void restart(int vidas, int index) { //ALTERAR PARA DESENHAR TODA FASEATUAL
         faseAtual.clear();  // Limpa a lista de personagens da fase
-
-        // Adicione os personagens iniciais novamente, como você fez no construtor
-        hero = new Hero("skoot.png");
-        hero.vidas = vidas;
-        hero.setPosicao(1, 7);
-        this.addPersonagem(hero);
-
-        ZigueZague zz = new ZigueZague("robo.png");
-        zz.setPosicao(5, 5);
-        this.addPersonagem(zz);
-
-        BichinhoVaiVemHorizontal bBichinhoH = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH.setPosicao(3, 3);
-        this.addPersonagem(bBichinhoH);
-
-        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
-        bBichinhoH2.setPosicao(6, 6);
-        this.addPersonagem(bBichinhoH2);
-
-        Caveira bV = new Caveira("caveira.png");
-        bV.setPosicao(9, 1);
-        this.addPersonagem(bV);
+        setFase(index);
     }
 
+    // Vai sempre desenhar nosso sprite que tem o fundo e a borda
     public void paint(Graphics gOld) {
         Graphics g = this.getBufferStrategy().getDrawGraphics();
         /*Criamos um contexto gráfico*/
@@ -200,20 +169,34 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        if (!this.faseAtual.isEmpty()) {
-            this.cj.desenhaTudo(faseAtual);
-            
-            if (this.cj.processaTudo(faseAtual)){
-                restart(hero.vidas);
-            }
-        }
+        if (!isPaused){
+            if (!this.faseAtual.isEmpty()) {
+                this.cj.desenhaTudo(faseAtual);
 
+                if (this.cj.processaTudo(faseAtual) == 0){
+                    restart(hero.vidas, 1); //AJEITAR PARA PASSAR O INDEX COMO PARAMETRO AO INVES DE '1'
+                }
+
+
+
+                if(this.cj.processaTudo(faseAtual) == 1){ 
+                    this.index++;
+                    this.faseAtual.clear();
+                    setFase(index);
+                }
+
+            }
+        } else {
+        // O jogo está pausado, desenhe uma mensagem de pausa ou faça o que desejar
+        g2.drawString("Jogo Pausado", 100, 100); // Exemplo de mensagem de pausa
+        }
         g.dispose();
         g2.dispose();
         if (!getBufferStrategy().contentsLost()) {
             getBufferStrategy().show();
         }
+        
+            
     }
 
     public void go() {
@@ -227,7 +210,24 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_C) { //Como mudar isso para que de restart na fase atual?
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+            isPaused = !isPaused;
+            Object[] options = { "Reiniciar Fase", "Voltar"};
+                int escolha = JOptionPane.showOptionDialog(
+                    null, 
+                    "Jogo Pausado!!! Deseja Reiniciar a Fase?",
+                    "Pause", 
+                    JOptionPane.INFORMATION_MESSAGE,
+                    JOptionPane.YES_NO_OPTION, 
+                    null, 
+                    options, 
+                    options[0]);
+                if (escolha == 0){
+                    this.faseAtual.clear();
+                    setFase(this.index);
+                } else {
+                    isPaused = !isPaused;
+                }
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
@@ -255,6 +255,84 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
          //this.hero.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
          
         repaint();
+    }
+    
+    
+    public void setFase(int index){
+        /*Cria faseAtual adiciona personagens*/
+        
+        hero.setPosicao(linhaHero, colunaHero);
+        this.addPersonagem(hero);             //SEMPRE ADD O HEOI PRIMEIRO SE NAO O CODIGO QUEBRA!!!!!!!!!!!!!!
+        
+        
+        //index começa como zero para a primeira fase, depois vamos incrmentando para mudar para fase seguinte
+    
+        int[][] fase = map.getFase(index);
+        
+        
+        for(int i=0; i<Consts.RES; i++){
+            for (int j=0; j<Consts.RES; j++){
+                int elem = fase[i][j];
+                
+                switch(elem){
+                    case 5:
+                        Cenario tijoloteste = new Cenario("bricks.png");
+                        tijoloteste.setPosicao(i, j);
+                        this.addPersonagem(tijoloteste);
+                    case 40:
+                        break;
+//                        default:
+//                            break;
+                    }
+            }
+        }
+        
+        
+        
+        Randomico zz = new Randomico("robo.png");
+        zz.setPosicao(5, 5);
+        this.addPersonagem(zz);
+
+        BichinhoVaiVemVertical bBichinhoH = new BichinhoVaiVemVertical("roboPink.png");
+        bBichinhoH.setPosicao(3, 3);
+        this.addPersonagem(bBichinhoH);
+
+        BichinhoVaiVemHorizontal bBichinhoH2 = new BichinhoVaiVemHorizontal("roboPink.png");
+        bBichinhoH2.setPosicao(6, 6);
+        this.addPersonagem(bBichinhoH2);
+
+        CaveiraUp bV = new CaveiraUp("caveira.png");
+        bV.setPosicao(9, 1);
+        this.addPersonagem(bV);
+        
+        
+        CaveiraRight bV2 = new CaveiraRight("caveira.png");
+        bV2.setPosicao(12, 1);
+        this.addPersonagem(bV2);
+        
+        PersegueHorizontal pj = new PersegueHorizontal("roboPink.png", hero);
+        pj.setPosicao(15, 15);
+        this.addPersonagem(pj);
+        
+        
+//        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
+//        pv.setPosicao(17, 15);
+//        this.addPersonagem(pv);
+        
+        Cenario tijolo1 = new Cenario("bricks.png");
+        tijolo1.setPosicao(3, 10);
+        this.addPersonagem(tijolo1); //Isso aqui ta cagando o vaievemhorizontal, pois ele bate no cenário e não volta
+
+        for(int i=10; i<16; i++){
+            Cenario tijolos = new Cenario("bricks.png");
+            tijolos.setPosicao(i, 10);
+            this.addPersonagem(tijolos);
+        }
+        
+        PassaFase pf = new PassaFase("coco.png");
+        pf.setPosicao(23, 23);
+        this.addPersonagem(pf);
+       
     }
 
 
@@ -306,4 +384,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyReleased(KeyEvent e) {
     }
+    
+
 }

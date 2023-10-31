@@ -11,9 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class BichinhoVaiVemHorizontal extends Personagem  implements Serializable{
+public class BichinhoVaiVemVertical extends Personagem  implements Serializable{
     private boolean bRight = true;
-    public BichinhoVaiVemHorizontal(String sNomeImagePNG) {
+    public BichinhoVaiVemVertical(String sNomeImagePNG) {
         super(sNomeImagePNG);
 //        bRight = true;
         this.bMortal = true;
@@ -84,11 +84,11 @@ public class BichinhoVaiVemHorizontal extends Personagem  implements Serializabl
     /*Com essa aqui, o ziguezague percorre toda a linha*/
     public void autoDesenho() {
         if (bRight) {
-                if(!this.moveRight()){
+                if(!this.moveDown()){
                     bRight = false;
                 }
             } else {
-                if(!this.moveLeft()){
+                if(!this.moveUp()){
                     bRight = true;
                 }
             }
