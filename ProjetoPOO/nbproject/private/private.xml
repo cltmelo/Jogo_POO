@@ -7,9 +7,17 @@
             <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Modelo/Personagem.java</file>
             <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Main.java</file>
             <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Auxiliar/Consts.java</file>
+<<<<<<< Updated upstream
             <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Modelo/BichinhoVaiVemHorizontal.java</file>
             <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Modelo/PersegueJogador.java</file>
             <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Modelo/Hero.java</file>
+=======
+            <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Controler/Tela.java</file>
+            <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Controler/SaveState.java</file>
+            <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Auxiliar/Posicao.java</file>
+            <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Modelo/PassaFase.java</file>
+            <file>file:/home/jean/Área%20de%20Trabalho/Jogo_POO/ProjetoPOO/src/Controler/ControleDeJogo.java</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>
