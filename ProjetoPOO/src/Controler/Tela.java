@@ -209,6 +209,41 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         timer.schedule(task, 0, Consts.PERIOD);
     }
 
+    public void salvarJogo() {
+        SaveState gameState = new SaveState(index, faseAtual);
+        try {
+            FileOutputStream fileOut = new FileOutputStream("savestate.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(gameState); // Salva o estado do jogo
+            out.close();
+            fileOut.close();
+            System.out.println("O jogo foi salvo com sucesso!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void carregarJogo() {
+        try {
+            FileInputStream fileIn = new FileInputStream("savestate.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            SaveState gameState = (SaveState) in.readObject(); // Carrega o estado do jogo
+            in.close();
+            fileIn.close();
+            index = gameState.getIndex(); // Atualiza o índice
+            faseAtual = gameState.getFaseAtual(); // Atualiza a fase atual
+            if (!faseAtual.isEmpty()) {
+                // Define o herói como o primeiro personagem na fase atual
+                if (faseAtual.get(0) instanceof Hero) {
+                    hero = (Hero) faseAtual.get(0);
+                }
+            }
+            System.out.println("Jogo carregado com sucesso!");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_R) {
             isPaused = !isPaused;
@@ -225,17 +260,40 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 if (escolha == 0){
                     this.faseAtual.clear();
                     setFase(this.index);
+                    isPaused = !isPaused;
                 } else {
                     isPaused = !isPaused;
                 }
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            this.salvarJogo();
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             hero.moveDown();
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             hero.moveLeft();
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             hero.moveRight();
+        } else if (e.getKeyCode() == KeyEvent.VK_L) {
+            isPaused = !isPaused;
+            Object[] options = { "Carregar Jogo", "Voltar"};
+                int escolha = JOptionPane.showOptionDialog(
+                    null, 
+                    "Jogo Pausado!!! Deseja carregar o último save?",
+                    "Pause", 
+                    JOptionPane.INFORMATION_MESSAGE,
+                    JOptionPane.YES_NO_OPTION, 
+                    null, 
+                    options, 
+                    options[0]);
+                if (escolha == 0){
+                    this.faseAtual.clear();
+                    isPaused = !isPaused;
+                    this.carregarJogo();
+                } else {
+                    isPaused = !isPaused;
+                }
+            
         }
 
         this.setTitle("-> Cell: " + (hero.getPosicao().getColuna()) + ", "
