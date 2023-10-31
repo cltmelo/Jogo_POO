@@ -272,6 +272,41 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
 
+    public void salvarJogo() {
+        SaveState gameState = new SaveState(index, faseAtual);
+        try {
+            FileOutputStream fileOut = new FileOutputStream("savestate.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(gameState); // Salva o estado do jogo
+            out.close();
+            fileOut.close();
+            System.out.println("O jogo foi salvo com sucesso!");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void carregarJogo() {
+        try {
+            FileInputStream fileIn = new FileInputStream("savestate.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            SaveState gameState = (SaveState) in.readObject(); // Carrega o estado do jogo
+            in.close();
+            fileIn.close();
+            index = gameState.getIndex(); // Atualiza o índice
+            faseAtual = gameState.getFaseAtual(); // Atualiza a fase atual
+            if (!faseAtual.isEmpty()) {
+                // Define o herói como o primeiro personagem na fase atual
+                if (faseAtual.get(0) instanceof Hero) {
+                    hero = (Hero) faseAtual.get(0);
+                }
+            }
+            System.out.println("Jogo carregado com sucesso!");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     public void keyPressed(KeyEvent e) {
 <<<<<<< Updated upstream
         if (e.getKeyCode() == KeyEvent.VK_C) { //Como mudar isso para que de restart na fase atual?

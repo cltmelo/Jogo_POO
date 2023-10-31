@@ -12,7 +12,7 @@ import java.util.ArrayList;
  *
  * @author jean
  */
-public class SaveState implements Serializable {
+class SaveState implements Serializable {
     private int index;
     private ArrayList<Personagem> faseAtual;
 
@@ -29,3 +29,7 @@ public class SaveState implements Serializable {
         return faseAtual;
     }
 }
+
+
+
+
