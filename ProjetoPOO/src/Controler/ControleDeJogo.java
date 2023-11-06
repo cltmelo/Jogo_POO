@@ -34,9 +34,10 @@ public class ControleDeJogo {
                     if (!pIesimoPersonagem.isbMortal()){
                         umaFase.remove(pIesimoPersonagem);
                     } else {
+                        hero.vidas--;
                         umaFase.clear();
                         Object[] options = { "Reiniciar Fase", "Sair do Jogo"};
-                        if (hero.vidas != 0){
+                        if (hero.vidas >= 0){
                             int escolha = JOptionPane.showOptionDialog(
                                 null, 
                                 "Fim de Jogo! Reinicie a Fase e tente novamente!\nVidas Restantes: " + hero.vidas ,
@@ -47,7 +48,6 @@ public class ControleDeJogo {
                                 options, 
                                 options[0]);
                             if (escolha == 0){
-                                hero.vidas--;
                                 /*Reiniciar Fase*/
                                 return 0;
                             } else {

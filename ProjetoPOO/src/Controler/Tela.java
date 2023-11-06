@@ -174,7 +174,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 this.cj.desenhaTudo(faseAtual);
 
                 if (this.cj.processaTudo(faseAtual) == 0){
-                    restart(hero.vidas, 1); //AJEITAR PARA PASSAR O INDEX COMO PARAMETRO AO INVES DE '1'
+                    restart(hero.vidas, this.index); //AJEITAR PARA PASSAR O INDEX COMO PARAMETRO AO INVES DE '1'
                 }
 
 
@@ -222,7 +222,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             e.printStackTrace();
         }
     }
-    public void carregarJogo() {
+    public boolean carregarJogo() {
         try {
             FileInputStream fileIn = new FileInputStream("savestate.ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
@@ -238,8 +238,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 }
             }
             System.out.println("Jogo carregado com sucesso!");
+            return true;
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("Save não encontrado!");
+            return false;
         }
     }
 
@@ -287,7 +289,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     options, 
                     options[0]);
                 if (escolha == 0){
-                    this.faseAtual.clear();
                     isPaused = !isPaused;
                     this.carregarJogo();
                 } else {
@@ -390,6 +391,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         PassaFase pf = new PassaFase("coco.png");
         pf.setPosicao(23, 23);
         this.addPersonagem(pf);
+        
+        PassaFase pf2 = new PassaFase("coco.png");
+        pf2.setPosicao(12, 12);
+        this.addPersonagem(pf2);
        
     }
 
