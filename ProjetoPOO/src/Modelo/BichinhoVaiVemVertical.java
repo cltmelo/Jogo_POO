@@ -84,24 +84,6 @@ public class BichinhoVaiVemVertical extends Personagem  implements Serializable{
     /*Com essa aqui, o ziguezague percorre toda a linha*/
     public void autoDesenho() {
         if (bRight) {
-            if (this.getPosicao().getLinha() < (Consts.RES - 2) ) {
-                // Move para a baixo
-                this.setPosicao(pPosicao.getLinha()+1, pPosicao.getColuna());
-            } else {
-                // Chegou à borda de cima, muda de direção
-                bRight = false;
-            }
-        } else {
-            if (this.getPosicao().getLinha() > 1) {
-                // Move para a cima
-                this.setPosicao(pPosicao.getLinha()-1, pPosicao.getColuna());
-            } else {
-                // Chegou à borda cima, muda de direção
-                bRight = true;
-            }
-        }
-        
-        if (bRight) {
                 if(!this.moveDown()){
                     bRight = false;
                 }
