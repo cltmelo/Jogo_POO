@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package Modelo;
 
 import Auxiliar.Consts;
@@ -11,18 +15,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class BichinhoVaiVemHorizontal extends Personagem  implements Serializable{
-<<<<<<< HEAD
-    private boolean bRight = true;
-=======
+/**
+ *
+ * @author jean
+ */
+public class PersegueJogador extends Personagem implements Serializable{
+    private Hero jogador;
     private boolean bRight;
->>>>>>> origin/Jean
-    public BichinhoVaiVemHorizontal(String sNomeImagePNG) {
+
+    public PersegueJogador(String sNomeImagePNG, Hero jogador) {
         super(sNomeImagePNG);
-//        bRight = true;
         this.bMortal = true;
-        //this.bTransponivel = false;
+        this.jogador = jogador;
     }
+
     
     public void voltaAUltimaPosicao(){
         this.pPosicao.volta();
@@ -72,22 +78,25 @@ public class BichinhoVaiVemHorizontal extends Personagem  implements Serializabl
         return false;
     }
     
-    @Override
-//    public void autoDesenho(){
-//        if(bRight)
-//            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()+1);
-//        else
-//            this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna()-1);           
-//
-//        super.autoDesenho();
-//        
-//        if(!validaPosicao())
-//            bRight = !bRight;
-//    }
-    
-    /*Com essa aqui, o ziguezague percorre toda a linha*/
     public void autoDesenho() {
-        if (bRight) {
+        if (jogador.getPosicao().getLinha() == this.getPosicao().getLinha()) {
+            // O jogador está na mesma linha vertical
+            if (jogador.getPosicao().getColuna() < this.getPosicao().getColuna()) {
+                // Mova o inimigo para a esquerda (em direção ao jogador)
+                this.moveLeft();
+            } else if (jogador.getPosicao().getColuna() > this.getPosicao().getColuna()) {
+                // Mova o inimigo para a direita (em direção ao jogador)
+                this.moveRight();
+            }
+        } else {
+                
+            if (pPosicao.getColuna() == Auxiliar.Consts.RES - 2) {
+                bRight = false; // Se chegou ao limite direito, mude a direção para a esquerda
+            } else if (pPosicao.getColuna() == 1) {
+                bRight = true; // Se chegou ao limite esquerdo, mude a direção para a direita
+            }
+
+            if (bRight) {
                 if(!this.moveRight()){
                     bRight = false;
                 }
@@ -96,8 +105,12 @@ public class BichinhoVaiVemHorizontal extends Personagem  implements Serializabl
                     bRight = true;
                 }
             }
-
-        super.autoDesenho();
+        }
+            super.autoDesenho();
+        // Se o jogador não estiver na mesma linha, o inimigo pode se mover de outra forma.
+        // Implemente o comportamento desejado nesse caso.
     }
     
+
 }
+

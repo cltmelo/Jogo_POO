@@ -3,7 +3,10 @@ package Controler;
 import Modelo.Personagem;
 import Modelo.Hero;
 import Auxiliar.Posicao;
+<<<<<<< HEAD
 import Modelo.PassaFase;
+=======
+>>>>>>> origin/Jean
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
