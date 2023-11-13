@@ -12,11 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class BichinhoVaiVemHorizontal extends Personagem  implements Serializable{
-<<<<<<< HEAD
     private boolean bRight = true;
-=======
-    private boolean bRight;
->>>>>>> origin/Jean
     public BichinhoVaiVemHorizontal(String sNomeImagePNG) {
         super(sNomeImagePNG);
 //        bRight = true;

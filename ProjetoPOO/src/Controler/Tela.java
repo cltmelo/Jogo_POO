@@ -11,19 +11,12 @@ import Modelo.BichinhoVaiVemHorizontal;
 import Modelo.BichinhoVaiVemVertical;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
-<<<<<<< HEAD
 import Modelo.PersegueHorizontal;
 import Modelo.Randomico;
 import Auxiliar.Posicao;
 import Modelo.CaveiraLeftUp;
 import Modelo.CaveiraRightUp;
 import Modelo.Cenario;
-=======
-import Modelo.PersegueJogador;
-import Modelo.ZigueZague;
-import Auxiliar.Posicao;
-import Modelo.Estrutura;
->>>>>>> origin/Jean
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Image;
@@ -47,13 +40,12 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.swing.JButton;
 import Modelo.PersegueVertical;
-<<<<<<< HEAD
 import Modelo.Fase;
 import javax.swing.JOptionPane;
 import Modelo.PassaFase;
 import Modelo.ChaosMonster;
-=======
->>>>>>> origin/Jean
+import Modelo.Chave;
+import Modelo.Porta;
 
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
@@ -66,7 +58,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     int linhaHero = 1;
     int colunaHero = 12;
     int index;
-    
+    int msg = 0;
     public Tela() {
         Desenho.setCenario(this);
         initComponents();
@@ -81,17 +73,9 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
         
         faseAtual = new ArrayList<Personagem>();
-        index = 4;
-        setFase(index);     
-        
-        
-        PersegueVertical pv = new PersegueVertical("roboPink.png", hero);
-        pv.setPosicao(17, 15);
-        this.addPersonagem(pv);
-        
-        Estrutura tijolos = new Estrutura("bricks.png");
-        tijolos.setPosicao(15, 10);
-        this.addPersonagem(tijolos);
+        index = 0;
+        setFase(index); 
+
         
     }
     
@@ -194,7 +178,27 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         if (!isPaused){
             if (!this.faseAtual.isEmpty()) {
                 this.cj.desenhaTudo(faseAtual);
-
+                
+                
+                if (index == 0 && msg == 0){
+                    
+                    isPaused = !isPaused;
+                    hero.nome = JOptionPane.showInputDialog(null, "Por favor, insira o nome do seu personagem:", "Nome do Personagem", JOptionPane.INFORMATION_MESSAGE);
+        
+                    JOptionPane.showMessageDialog(
+                    null,
+                    "Bem-vindo, " + hero.nome + "! Prepare-se para uma jornada emocionante e desafiadora como um destemido Herói. Enfrente inimigos ferozes, desvende mistérios e conquiste o mundo com sua coragem e força.\n" +
+                    "\n" +
+                    "Lembre-se, o caminho dos Berserkers é árduo, e somente os mais corajosos e habilidosos terão sucesso. Esteja pronto para lutar até o fim e se tornar uma lenda!\n" +
+                    "\nConquiste todos os Baldes de Hidromel para prosseguir para a próxima fase!",
+                    "Dark Sonia",
+                    JOptionPane.INFORMATION_MESSAGE
+                    );
+                    msg++;
+                    System.out.println(hero.nome + ". Quantidade de Vidas: " + hero.vidas + ". \nPegue os baldes de Hidromel para prosseguir e as chaves para superar os obstáculos da masmorra. \nDesvie dos Inimigos e Conquiste a glória!");
+                    System.out.println("Use as setas do teclado para se movimentar!\nR - Reinicia Fase\nS - Salva o jogo\nL - Carrega o último Save\nBotão Esquedo do Mouse - Passa de Fase Automaticamente (Solução de covardes!)");
+                    isPaused = !isPaused;
+                }
                 if (this.cj.processaTudo(faseAtual) == 0){
                     restart(hero.vidas, this.index); //AJEITAR PARA PASSAR O INDEX COMO PARAMETRO AO INVES DE '1'
                 }
@@ -203,8 +207,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
                 if(this.cj.processaTudo(faseAtual) == 1){ 
                     this.index++;
-                    this.faseAtual.clear();
-                    setFase(index);
+                    if (index == 5){
+                        JOptionPane.showMessageDialog(
+                                null, 
+                                "Você, destemido Berserker, superou todos os desafios, derrotou os inimigos mais temíveis e provou ser verdadeiramente lendário."
+                                 + "\n\nSeu nome ecoará na história como o Berserker invencível. Parabéns, você completou o jogo de Berserker!\n\nJogo Feito por Jean Cassiano e Lucas Corlete",
+                                
+                                "Parabéns!", 
+                                JOptionPane.INFORMATION_MESSAGE);
+                        this.faseAtual.clear();
+                        System.exit(0);
+                    }
+                    else {
+                        this.faseAtual.clear();
+                        setFase(index);
+                    }
                 }
 
             }
@@ -230,76 +247,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         Timer timer = new Timer();
         timer.schedule(task, 0, Consts.PERIOD);
     }
-    
-    public void salvarJogo() {
-        SaveState gameState = new SaveState(index, faseAtual);
-        try {
-            FileOutputStream fileOut = new FileOutputStream("savestate.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(gameState); // Salva o estado do jogo
-            out.close();
-            fileOut.close();
-            System.out.println("O jogo foi salvo com sucesso!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void carregarJogo() {
-        try {
-            FileInputStream fileIn = new FileInputStream("savestate.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            SaveState gameState = (SaveState) in.readObject(); // Carrega o estado do jogo
-            in.close();
-            fileIn.close();
-            index = gameState.getIndex(); // Atualiza o índice
-            faseAtual = gameState.getFaseAtual(); // Atualiza a fase atual
-            if (!faseAtual.isEmpty()) {
-                // Define o herói como o primeiro personagem na fase atual
-                if (faseAtual.get(0) instanceof Hero) {
-                    hero = (Hero) faseAtual.get(0);
-                }
-            }
-            System.out.println("Jogo carregado com sucesso!");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public void salvarJogo() {
-        SaveState gameState = new SaveState(index, faseAtual);
-        try {
-            FileOutputStream fileOut = new FileOutputStream("savestate.ser");
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            out.writeObject(gameState); // Salva o estado do jogo
-            out.close();
-            fileOut.close();
-            System.out.println("O jogo foi salvo com sucesso!");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void carregarJogo() {
-        try {
-            FileInputStream fileIn = new FileInputStream("savestate.ser");
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            SaveState gameState = (SaveState) in.readObject(); // Carrega o estado do jogo
-            in.close();
-            fileIn.close();
-            index = gameState.getIndex(); // Atualiza o índice
-            faseAtual = gameState.getFaseAtual(); // Atualiza a fase atual
-            if (!faseAtual.isEmpty()) {
-                // Define o herói como o primeiro personagem na fase atual
-                if (faseAtual.get(0) instanceof Hero) {
-                    hero = (Hero) faseAtual.get(0);
-                }
-            }
-            System.out.println("Jogo carregado com sucesso!");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
 
     public void salvarJogo() {
         SaveState gameState = new SaveState(index, faseAtual);
@@ -339,12 +286,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
 
     public void keyPressed(KeyEvent e) {
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-        if (e.getKeyCode() == KeyEvent.VK_C) { //Como mudar isso para que de restart na fase atual?
-=======
->>>>>>> origin/Jean
         if (e.getKeyCode() == KeyEvent.VK_R) {
             isPaused = !isPaused;
             Object[] options = { "Reiniciar Fase", "Voltar"};
@@ -364,10 +305,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 } else {
                     isPaused = !isPaused;
                 }
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes
->>>>>>> origin/Jean
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             hero.moveUp();
         } else if (e.getKeyCode() == KeyEvent.VK_S) {
@@ -391,10 +328,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     options, 
                     options[0]);
                 if (escolha == 0){
-<<<<<<< HEAD
-=======
-                    this.faseAtual.clear();
->>>>>>> origin/Jean
                     isPaused = !isPaused;
                     this.carregarJogo();
                 } else {
@@ -411,11 +344,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void mousePressed(MouseEvent e) {
         /* Clique do mouse desligado*/
-         int x = e.getX();
-         int y = e.getY();
-     
-         this.setTitle("X: "+ x + ", Y: " + y +
-         " -> Cell: " + (y/Consts.CELL_SIDE) + ", " + (x/Consts.CELL_SIDE));
+        index++;
+        this.faseAtual.clear();
+        if (index == 5){
+                        JOptionPane.showMessageDialog(
+                                null, 
+                                "Você, destemido Berserker, superou todos os desafios, derrotou os inimigos mais temíveis e provou ser verdadeiramente lendário."
+                                 + "\n\nSeu nome ecoará na história como o Berserker invencível. Parabéns, você completou o jogo de Berserker!\n\nJogo Feito por Jean Cassiano e Lucas Corlete",
+                                
+                                "Parabéns!", 
+                                JOptionPane.INFORMATION_MESSAGE);
+                        this.faseAtual.clear();
+                        System.exit(0);
+        }
+        this.setFase(index);
+        repaint();
         
          //this.hero.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
          
@@ -516,6 +459,18 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                             bCaveiraRightUp.setPosicao(i, j);
                             this.addPersonagem(bCaveiraRightUp);
                             break;
+                        case 50:
+                            Porta door = new Porta("door.png");
+                            door.setPosicao(i, j);
+                            this.addPersonagem(door);
+                            break;
+                        case 80:
+                            Chave key = new Chave("key.png");
+                            key.setPosicao(i, j);
+                            this.addPersonagem(key);
+                            break;
+                        
+                           
                         case 999:
                             ChaosMonster bChaosMonster = new ChaosMonster("ghost.png");
                             bChaosMonster.setPosicao(i, j);

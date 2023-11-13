@@ -3,10 +3,9 @@ package Controler;
 import Modelo.Personagem;
 import Modelo.Hero;
 import Auxiliar.Posicao;
-<<<<<<< HEAD
+import Modelo.Chave;
 import Modelo.PassaFase;
-=======
->>>>>>> origin/Jean
+import Modelo.Porta;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
@@ -21,6 +20,7 @@ public class ControleDeJogo {
     public int processaTudo(ArrayList<Personagem> umaFase){
         Hero hero = (Hero)umaFase.get(0);
         int aux = 0;
+        int key = 0;
         Personagem pIesimoPersonagem;
         for(int i = 1; i < umaFase.size(); i++){
             pIesimoPersonagem = umaFase.get(i);
@@ -28,16 +28,24 @@ public class ControleDeJogo {
             if (pIesimoPersonagem instanceof PassaFase){
                 aux++;
             }
-            
-            
-                 
+            if (pIesimoPersonagem instanceof Chave){
+                key++;
+            }
+            if (pIesimoPersonagem instanceof Porta && hero.chaves > 0){
+                pIesimoPersonagem.setbTransponivel(true);
+            }  
             if(hero.getPosicao().igual(pIesimoPersonagem.getPosicao()))
                 if(pIesimoPersonagem.isbTransponivel())
+
                     /*TO-DO: verificar se o personagem eh mortal antes de retirar*/  
                     if (!pIesimoPersonagem.isbMortal()){
                         umaFase.remove(pIesimoPersonagem);
+                        if (pIesimoPersonagem instanceof Chave){
+                            hero.chaves++;
+                        }
                     } else {
                         hero.vidas--;
+                        System.out.println(hero.nome + ". Quantidade de Vidas: " + hero.vidas);
                         umaFase.clear();
                         Object[] options = { "Reiniciar Fase", "Sair do Jogo"};
                         if (hero.vidas >= 0){
@@ -71,7 +79,7 @@ public class ControleDeJogo {
         }
         
     }
-        
+          
     if (aux == 0){
         return 1;
     }
