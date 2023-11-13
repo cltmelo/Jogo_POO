@@ -75,10 +75,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual = new ArrayList<Personagem>();
         index = 0;
         setFase(index); 
-        isPaused = !isPaused;
-        System.out.println(hero.nome + ". Quantidade de Vidas: " + hero.vidas + ". \nPegue os baldes de Hidromel para prosseguir e as chaves para superar os obstáculos da masmorra. \nDesvie dos Inimigos e Conquiste a glória!");
-        isPaused = !isPaused;
-        System.out.println("Use as setas do teclado para se movimentar!\nR - Reinicia Fase\nS - Salva o jogo\nL - Carrega o último Save\nBotão Esquedo do Mouse - Passa de Fase Automaticamente (Solução de covardes!)");
+
         
     }
     
@@ -184,6 +181,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 
                 
                 if (index == 0 && msg == 0){
+                    
                     isPaused = !isPaused;
                     hero.nome = JOptionPane.showInputDialog(null, "Por favor, insira o nome do seu personagem:", "Nome do Personagem", JOptionPane.INFORMATION_MESSAGE);
         
@@ -197,6 +195,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                     JOptionPane.INFORMATION_MESSAGE
                     );
                     msg++;
+                    System.out.println(hero.nome + ". Quantidade de Vidas: " + hero.vidas + ". \nPegue os baldes de Hidromel para prosseguir e as chaves para superar os obstáculos da masmorra. \nDesvie dos Inimigos e Conquiste a glória!");
+                    System.out.println("Use as setas do teclado para se movimentar!\nR - Reinicia Fase\nS - Salva o jogo\nL - Carrega o último Save\nBotão Esquedo do Mouse - Passa de Fase Automaticamente (Solução de covardes!)");
                     isPaused = !isPaused;
                 }
                 if (this.cj.processaTudo(faseAtual) == 0){
