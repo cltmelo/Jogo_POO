@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 
 public class Hero extends Personagem implements Serializable{
     public int vidas;
+    public String nome;
+    public int chaves = 0;
     public Hero(String sNomeImagePNG) {
         super(sNomeImagePNG);
         vidas = 3;

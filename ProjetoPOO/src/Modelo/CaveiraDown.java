@@ -22,7 +22,7 @@ public class CaveiraDown extends Personagem implements Serializable{
         if(this.iContaIntervalos == Consts.TIMER_DISPARO){
             this.iContaIntervalos = 0;
             FogoDown f = new FogoDown("fire_down.png");
-            f.setPosicao(pPosicao.getLinha(),pPosicao.getColuna()+1);
+            f.setPosicao(pPosicao.getLinha()+1,pPosicao.getColuna());
             Desenho.acessoATelaDoJogo().addPersonagem(f);
         }
     }    

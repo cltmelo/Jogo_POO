@@ -84,24 +84,6 @@ public class BichinhoVaiVemHorizontal extends Personagem  implements Serializabl
     /*Com essa aqui, o ziguezague percorre toda a linha*/
     public void autoDesenho() {
         if (bRight) {
-            if (this.getPosicao().getColuna() < (Consts.RES - 2) ) {
-                // Move para a direita
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() + 1);
-            } else {
-                // Chegou à borda direita, muda de direção
-                bRight = false;
-            }
-        } else {
-            if (this.getPosicao().getColuna() > 1) {
-                // Move para a esquerda
-                this.setPosicao(pPosicao.getLinha(), pPosicao.getColuna() - 1);
-            } else {
-                // Chegou à borda esquerda, muda de direção
-                bRight = true;
-            }
-        }
-        
-        if (bRight) {
                 if(!this.moveRight()){
                     bRight = false;
                 }
