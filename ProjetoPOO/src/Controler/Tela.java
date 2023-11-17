@@ -38,7 +38,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-import javax.swing.JButton;
 import Modelo.PersegueVertical;
 import Modelo.Fase;
 import javax.swing.JOptionPane;
@@ -46,6 +45,7 @@ import Modelo.PassaFase;
 import Modelo.ChaosMonster;
 import Modelo.Chave;
 import Modelo.Porta;
+import java.awt.Font;
 
 
 public class Tela extends javax.swing.JFrame implements MouseListener, KeyListener {
@@ -226,8 +226,17 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
             }
         } else {
-        // O jogo está pausado, desenhe uma mensagem de pausa ou faça o que desejar
-        g2.drawString("Jogo Pausado", 100, 100); // Exemplo de mensagem de pausa
+
+            // Definir a cor e a fonte para a mensagem de pausa
+            var font = new Font("Arial", Font.BOLD, 24);
+            Font fontBold = font.deriveFont(Font.BOLD, 24);
+            g2.setFont(fontBold);
+            // Desenhar a mensagem de pausa no centro da tela
+            String mensagemPausa = "Jogo Pausado";
+            int larguraTexto = g2.getFontMetrics().stringWidth(mensagemPausa);
+            int x = (getWidth() - larguraTexto) / 2;
+            int y = getHeight() / 2;
+            g2.drawString(mensagemPausa, x, y); // Exemplo de mensagem de pausa
         }
         g.dispose();
         g2.dispose();
